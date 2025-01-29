@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msvc-oauth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msvc-oauth
+  template:
+    metadata:
+      labels:
+        app: msvc-oauth
+    spec:
+      containers:
+        - image: frankdc07/oauth:latest
+          name: oauth
+          ports:
+          - containerPort: 9000
+          env:
+            - name: LB_USUARIOS_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-usuarios
+                  key: lb_usuarios_uri
+
